@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Game } from "../types";
-import { AddPlayerDialog, type AddPlayerDialogHandle } from "../components/AddPlayerDialog";
 import type { ConfirmDialogHandle } from "../components/ConfirmDialog";
-import { PlayerCard } from "../components/PlayerCard";
 import type { PlayerProfile } from "../types";
 import { capitalizeFirst } from "../utils/text";
 import { sortPlayers } from "../utils/ranking";
-import { WinCelebration } from "../components/WinCelebration";
+import { WinCelebration } from "../components/WinCelebration/WinCelebration";
+import {
+  AddPlayerDialog,
+  AddPlayerDialogHandle,
+} from "../components/AddPlayerDialog/AddPlayerDialog";
+import { PlayerCard } from "../components/PlayerCard/PlayerCard";
 
 type Props = {
   game: Game;
@@ -17,7 +20,11 @@ type Props = {
   onTriggerPulse: (playerId: string, delta: number) => void;
   onAddFromProfile: (profileId: string) => void;
   onDeleteProfile: (profileId: string) => void;
-  onCreateAndAdd: (name: string, avatarColor: string, saveForLater: boolean) => boolean;
+  onCreateAndAdd: (
+    name: string,
+    avatarColor: string,
+    saveForLater: boolean
+  ) => boolean;
   onUpdateScore: (playerId: string, delta: number) => void;
   onDeletePlayer: (playerId: string) => void;
   ranks: Map<string, number>;
@@ -42,8 +49,9 @@ export function GameScreen({
   allZero,
 }: Props) {
   const takenProfileIds = useMemo(
-    () => new Set(game.players.map((p) => p.profileId).filter(Boolean) as string[]),
-    [game.players],
+    () =>
+      new Set(game.players.map((p) => p.profileId).filter(Boolean) as string[]),
+    [game.players]
   );
 
   const hasPlayers = game.players.length > 0;
@@ -66,12 +74,21 @@ export function GameScreen({
 
   return (
     <>
-      {winFxName ? <WinCelebration winnerName={winFxName} onDone={() => setWinFxName(null)} /> : null}
+      {winFxName ? (
+        <WinCelebration
+          winnerName={winFxName}
+          onDone={() => setWinFxName(null)}
+        />
+      ) : null}
       <main className="content">
         {!hasPlayers ? (
           <section className="empty">
             <h1 className="empty__title">Add players to start.</h1>
-            <button className="btn btn--primary btn--xl" type="button" onClick={() => addDialogRef.current?.open()}>
+            <button
+              className="btn btn--primary btn--xl"
+              type="button"
+              onClick={() => addDialogRef.current?.open()}
+            >
               Add first player
             </button>
           </section>

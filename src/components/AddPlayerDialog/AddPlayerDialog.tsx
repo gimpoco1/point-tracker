@@ -5,9 +5,9 @@ import {
   useRef,
   useState,
 } from "react";
-import { AVATAR_COLORS } from "../constants";
-import type { PlayerProfile } from "../types";
-import { capitalizeFirst, clampName } from "../utils/text";
+import { AVATAR_COLORS } from "../../constants";
+import type { PlayerProfile } from "../../types";
+import { capitalizeFirst, clampName } from "../../utils/text";
 import "./AddPlayerDialog.css";
 
 export type AddPlayerDialogHandle = {

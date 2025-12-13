@@ -1,8 +1,8 @@
 import { useMemo, useRef, useState } from "react";
-import type { Player } from "../types";
-import { QUICK_DELTAS } from "../constants";
-import { avatarStyleFor } from "../utils/color";
-import { capitalizeFirst } from "../utils/text";
+import type { Player } from "../../types";
+import { QUICK_DELTAS } from "../../constants";
+import { avatarStyleFor } from "../../utils/color";
+import { capitalizeFirst } from "../../utils/text";
 import "./PlayerCard.css";
 
 type Props = {

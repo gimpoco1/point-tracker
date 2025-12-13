@@ -1,12 +1,12 @@
 import { useMemo, useRef, useState } from "react";
-import { type AddPlayerDialogHandle } from "./components/AddPlayerDialog";
 import { ConfirmDialog, type ConfirmDialogHandle } from "./components/ConfirmDialog";
-import { TopBar } from "./components/TopBar";
+import { TopBar } from "./components/TopBar/TopBar";
 import { useProfiles } from "./hooks/useProfiles";
 import { useGames } from "./hooks/useGames";
 import { useScorePulse } from "./hooks/useScorePulse";
 import { HomeScreen } from "./screens/HomeScreen";
 import { GameScreen } from "./screens/GameScreen";
+import { AddPlayerDialogHandle } from "./components/AddPlayerDialog/AddPlayerDialog";
 
 export default function App() {
   const { profiles, upsertProfile, deleteProfile } = useProfiles();
