@@ -20,14 +20,11 @@ export default function App() {
     removePlayer,
     resetScores,
     updateScore,
-    sortedPlayers,
-    ranks,
-    allZero,
   } = useGames();
   const { pulseById, triggerPulse } = useScorePulse();
   const confirmRef = useRef<ConfirmDialogHandle>(null!);
   const addDialogRef = useRef<AddPlayerDialogHandle>(null!);
-  const [view, setView] = useState<"home" | "game">(() => (currentGame ? "game" : "home"));
+  const [view, setView] = useState<"home" | "game">("home");
 
   const gameMeta = useMemo(() => {
     if (!currentGame) return undefined;
@@ -94,9 +91,6 @@ export default function App() {
           pulseById={pulseById}
           onTriggerPulse={triggerPulse}
           addDialogRef={addDialogRef}
-          ranks={ranks}
-          sortedPlayers={sortedPlayers}
-          allZero={allZero}
           onAddFromProfile={(profileId) => {
             const profile = profiles.find((p) => p.id === profileId);
             if (!profile) return;

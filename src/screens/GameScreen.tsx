@@ -5,6 +5,7 @@ import type { PlayerProfile } from "../types";
 import { capitalizeFirst } from "../utils/text";
 import { sortPlayers } from "../utils/ranking";
 import { WinCelebration } from "../components/WinCelebration/WinCelebration";
+import { useDelayedRanking } from "../hooks/useDelayedRanking";
 import {
   AddPlayerDialog,
   AddPlayerDialogHandle,
@@ -27,9 +28,6 @@ type Props = {
   ) => boolean;
   onUpdateScore: (playerId: string, delta: number) => void;
   onDeletePlayer: (playerId: string) => void;
-  ranks: Map<string, number>;
-  sortedPlayers: Game["players"];
-  allZero: boolean;
 };
 
 export function GameScreen({
@@ -44,9 +42,6 @@ export function GameScreen({
   onCreateAndAdd,
   onUpdateScore,
   onDeletePlayer,
-  ranks,
-  sortedPlayers,
-  allZero,
 }: Props) {
   const takenProfileIds = useMemo(
     () =>
@@ -57,6 +52,14 @@ export function GameScreen({
   const hasPlayers = game.players.length > 0;
   const [winFxName, setWinFxName] = useState<string | null>(null);
   const prevWinnerIdRef = useRef<string | null>(null);
+  const { orderedPlayers, ranks, scheduleResort } = useDelayedRanking(
+    game.players,
+    1200
+  );
+  const allZero = useMemo(
+    () => game.players.length > 0 && game.players.every((p) => p.score === 0),
+    [game.players]
+  );
 
   const winner = useMemo(() => {
     if (!game.players.length) return null;
@@ -94,7 +97,7 @@ export function GameScreen({
           </section>
         ) : (
           <section className="grid" aria-label="Players">
-            {sortedPlayers.map((player) => {
+            {orderedPlayers.map((player) => {
               const rank = ranks.get(player.id) ?? 1;
               const pulse = pulseById[player.id];
               return (
@@ -108,6 +111,7 @@ export function GameScreen({
                   onDelta={(playerId, delta) => {
                     onUpdateScore(playerId, delta);
                     onTriggerPulse(playerId, delta);
+                    scheduleResort();
                   }}
                   onDelete={async (playerId) => {
                     const p = game.players.find((x) => x.id === playerId);
