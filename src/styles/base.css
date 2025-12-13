@@ -28,8 +28,8 @@ body {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial,
-    system-ui, "Apple Color Emoji", "Segoe UI Emoji";
+  font-family: "Nunito", ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "SF Pro Text", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
   background: radial-gradient(1000px 700px at 10% 10%, rgba(255, 255, 255, 0.08), transparent 60%),
     radial-gradient(900px 650px at 90% 20%, rgba(255, 255, 255, 0.06), transparent 60%),
     radial-gradient(700px 600px at 40% 95%, rgba(255, 255, 255, 0.05), transparent 60%), var(--bg);
@@ -93,4 +93,3 @@ input {
   margin: 10px 0 18px;
   color: var(--muted);
 }
-
