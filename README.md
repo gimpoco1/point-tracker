@@ -1,6 +1,6 @@
-# point-tracker
+# plink-point-tracker
 
-Minimal one-page points tracker (React + Vite). Stores players + scores in `localStorage` so you can use it offline on a single device.
+Minimal points tracker app (React + Vite). Stores players + scores and games in `localStorage` so you can use it offline on a single device.
 
 ## Run locally
 

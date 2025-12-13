@@ -16,6 +16,7 @@
 .logo__img {
   width: 42px;
   height: 42px;
+
 }
 
 .brand {
@@ -45,9 +46,9 @@
 
 
 .brand__title {
-  font-size: 16px;
-  font-weight: 900;
-  letter-spacing: -0.2px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 1px;
   line-height: 1.1;
 }
 

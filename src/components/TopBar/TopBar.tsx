@@ -15,20 +15,20 @@ export function TopBar({
   hasPlayers,
   playerCount,
   showReset = true,
-  title = "Point Tracker",
+  title = "Plink",
   meta,
   onLogoClick,
   onAddPlayer,
   onResetGame,
 }: Props) {
-  const displayTitle = title.trim() ? title.trim().replace(/^./, (c) => c.toUpperCase()) : "Point Tracker";
+  const displayTitle = title.trim() ? title.trim().replace(/^./, (c) => c.toUpperCase()) : "Plink";
   return (
     <header className="topbar">
       <div className="topbar__left">
         <div className="brand">
           <div className="brand__row">
             <button className="logo" type="button" onClick={onLogoClick} aria-label="Go to games">
-              <img src="/icon3.png" alt="" className="logo__img" />
+              <img src="/icon1.png" alt="" className="logo__img" />
             </button>
             <div className="brand__title">{displayTitle}</div>
           </div>

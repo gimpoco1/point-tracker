@@ -42,7 +42,7 @@ export default function App() {
   return (
     <div className="app">
       <TopBar
-        title={view === "game" && currentGame ? currentGame.name : "Point Tracker"}
+        title={view === "game" && currentGame ? currentGame.name : "Plink"}
         meta={view === "game" && currentGame ? gameMeta : undefined}
         hasPlayers={view === "game" && !!currentGame && currentGame.players.length > 0}
         playerCount={view === "game" && currentGame ? currentGame.players.length : 0}
