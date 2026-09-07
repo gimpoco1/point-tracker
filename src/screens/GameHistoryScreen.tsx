@@ -45,7 +45,6 @@ export function GameHistoryScreen({ game }: Props) {
       scrollLeft: event.currentTarget.scrollLeft,
       dragged: false,
     };
-    event.currentTarget.setPointerCapture(event.pointerId);
   }
 
   function handleFilterPointerMove(event: PointerEvent<HTMLDivElement>) {
@@ -55,6 +54,10 @@ export function GameHistoryScreen({ game }: Props) {
     const deltaX = event.clientX - drag.startX;
     if (Math.abs(deltaX) > 4) {
       drag.dragged = true;
+      // Capture only drags so ordinary clicks still reach the filter buttons.
+      if (!event.currentTarget.hasPointerCapture(event.pointerId)) {
+        event.currentTarget.setPointerCapture(event.pointerId);
+      }
       event.preventDefault();
     }
     event.currentTarget.scrollLeft = drag.scrollLeft - deltaX;
@@ -63,7 +66,9 @@ export function GameHistoryScreen({ game }: Props) {
   function handleFilterPointerEnd(event: PointerEvent<HTMLDivElement>) {
     const drag = filterDragRef.current;
     if (drag.pointerId !== event.pointerId) return;
-    event.currentTarget.releasePointerCapture(event.pointerId);
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
     filterDragRef.current.pointerId = -1;
   }
 

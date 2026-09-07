@@ -13,7 +13,15 @@
     "native:sync": "npm run build && cap sync",
     "ios:sync": "npm run build && cap sync ios",
     "ios:open": "cap open ios",
-    "ios:run": "npm run ios:sync && cap run ios"
+    "ios:run": "npm run ios:sync && cap run ios",
+    "build:e2e": "tsc -b && vite build --mode e2e --outDir dist-e2e",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report",
+    "test:e2e:types": "tsc -p tsconfig.e2e.json",
+    "test:e2e:hosted": "playwright test -c playwright.hosted.config.ts",
+    "test:e2e:hosted:provision": "node --experimental-strip-types e2e/hosted/provision.ts",
+    "test:e2e:hosted:cleanup": "node --experimental-strip-types e2e/hosted/cleanup.ts"
   },
   "dependencies": {
     "@capacitor/app": "^8.1.0",
@@ -38,6 +46,8 @@
   },
   "devDependencies": {
     "@capacitor/cli": "^8.4.1",
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^22.20.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@types/three": "^0.185.0",
