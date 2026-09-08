@@ -68,11 +68,12 @@ next launch, recovering rows left by an interrupted previous run. The manual
 cleanup command is available after a crash. A game with a non-test collaborator
 causes cleanup to refuse rather than delete that person's shared game.
 
-Use these accounts only for tests. One worker and a local `.hosted-e2e.lock`
-prevent overlapping local runs; GitHub Actions uses a shared concurrency group.
+Use these accounts only for tests. One worker and an atomic lock in the system temporary directory
+prevent overlapping runs and manual cleanup across local checkouts using the same
+project/account pair; GitHub Actions uses a shared concurrency group.
 Do not run local and CI tests concurrently against the same account pair. Use a
 separate pair/project per independently running environment. After a forcibly
-killed process, confirm it has stopped before removing `.hosted-e2e.lock` and
+killed process, confirm it has stopped before removing the lock path printed in the error and
 running cleanup. A killed runner cannot execute its teardown.
 
 ## OAuth completion

@@ -234,3 +234,31 @@ test("completed sessions appear in the completed filter and reopen with their sc
   await expectScore(page, "Alice", 5);
   await expectScore(page, "Bob", 0);
 });
+
+test("history keyboard filtering still works after a pointer is released outside the filter", async ({
+  page,
+}) => {
+  await setupGame(page);
+  await startGame(page);
+  await addPoints(page, "Alice", 3);
+  await addPoints(page, "Bob", 2);
+  await gameAction(page, "Game history");
+  const filter = page.getByLabel("Filter history by player", { exact: true });
+  const bounds = await filter.boundingBox();
+  if (!bounds) throw new Error("History filter is not visible");
+  await page.mouse.move(bounds.x + 1, bounds.y + bounds.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(bounds.x - 2, bounds.y + bounds.height / 2);
+  await page.mouse.up();
+  await page.mouse.move(
+    bounds.x + bounds.width / 2,
+    bounds.y + bounds.height / 2,
+  );
+  await filter.getByRole("button", { name: "Alice", exact: true }).focus();
+  await page.keyboard.press("Enter");
+  await expect(
+    page
+      .getByRole("region", { name: "Game history", exact: true })
+      .getByRole("article"),
+  ).toHaveCount(1);
+});

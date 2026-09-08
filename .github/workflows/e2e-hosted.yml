@@ -37,8 +37,9 @@ jobs:
       - run: npx playwright install --with-deps chromium webkit
       - run: npm run test:e2e:types
       - run: npm run test:e2e:hosted
+        id: hosted-tests
       - name: Final cleanup after test failure
-        if: ${{ always() }}
+        if: ${{ !cancelled() && steps.hosted-tests.outcome == 'failure' }}
         run: npm run test:e2e:hosted:cleanup
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}

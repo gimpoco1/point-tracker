@@ -18,6 +18,7 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:report": "playwright show-report",
+    "test:e2e:infrastructure": "node --experimental-strip-types --test e2e/hosted/local-files.test.ts",
     "test:e2e:types": "tsc -p tsconfig.e2e.json",
     "test:e2e:hosted": "playwright test -c playwright.hosted.config.ts",
     "test:e2e:hosted:provision": "node --experimental-strip-types e2e/hosted/provision.ts",

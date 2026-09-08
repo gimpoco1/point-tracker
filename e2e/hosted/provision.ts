@@ -1,9 +1,11 @@
-import { appendFileSync, chmodSync } from "node:fs";
+import { saveCredentials } from "./local-files.ts";
 import { randomBytes } from "node:crypto";
 import { adminClient, check, verifyAccounts } from "./backend.ts";
 import { marker, roles } from "./env.ts";
 
 const admin = adminClient();
+// Verify local persistence and secure the file before creating remote users.
+saveCredentials(".env.e2e-hosted.local", {});
 for (const role of roles) {
   const prefix = `E2E_${role.toUpperCase()}`;
   if (process.env[`${prefix}_ID`]) continue;
@@ -23,14 +25,17 @@ for (const role of roles) {
     [`${prefix}_EMAIL`]: email,
     [`${prefix}_PASSWORD`]: password,
   };
-  appendFileSync(
-    ".env.e2e-hosted.local",
-    Object.entries(values)
-      .map(([key, value]) => `${key}=${value}\n`)
-      .join(""),
-    { mode: 0o600 },
-  );
-  chmodSync(".env.e2e-hosted.local", 0o600);
+  try {
+    saveCredentials(".env.e2e-hosted.local", values);
+  } catch (error) {
+    // This invocation created the user; avoid leaving an inaccessible account.
+    const removed = await admin.auth.admin.deleteUser(data.user.id);
+    check(
+      removed.error,
+      `Rollback ${role} after credential persistence failed`,
+    );
+    throw error;
+  }
   Object.assign(process.env, values);
   console.log(`Created dedicated ${role} account; credentials saved locally.`);
 }
