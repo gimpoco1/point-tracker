@@ -246,9 +246,9 @@ test("history keyboard filtering still works after a pointer is released outside
   const filter = page.getByLabel("Filter history by player", { exact: true });
   const bounds = await filter.boundingBox();
   if (!bounds) throw new Error("History filter is not visible");
-  await page.mouse.move(bounds.x + 1, bounds.y + bounds.height / 2);
+  await page.mouse.move(bounds.x + 20, bounds.y + bounds.height / 2);
   await page.mouse.down();
-  await page.mouse.move(bounds.x - 2, bounds.y + bounds.height / 2);
+  await page.mouse.move(bounds.x - 20, bounds.y + bounds.height / 2);
   await page.mouse.up();
   await page.mouse.move(
     bounds.x + bounds.width / 2,
@@ -261,4 +261,10 @@ test("history keyboard filtering still works after a pointer is released outside
       .getByRole("region", { name: "Game history", exact: true })
       .getByRole("article"),
   ).toHaveCount(1);
+  await filter.getByRole("button", { name: "All", exact: true }).click();
+  await expect(
+    page
+      .getByRole("region", { name: "Game history", exact: true })
+      .getByRole("article"),
+  ).toHaveCount(2);
 });

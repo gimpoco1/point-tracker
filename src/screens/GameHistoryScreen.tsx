@@ -81,7 +81,10 @@ export function GameHistoryScreen({ game }: Props) {
 
   function handleFilterClickCapture(event: MouseEvent<HTMLDivElement>) {
     // Keyboard activation must never be consumed by an earlier pointer drag.
-    if (event.detail === 0) return;
+    if (event.detail === 0) {
+      filterDragRef.current.dragged = false;
+      return;
+    }
     if (!filterDragRef.current.dragged) return;
     event.preventDefault();
     event.stopPropagation();
