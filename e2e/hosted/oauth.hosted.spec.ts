@@ -17,7 +17,7 @@ for (const [provider, label, providerHost] of [
         url.origin === connection().url && url.pathname === "/auth/v1/authorize"
       );
     });
-    await page.getByRole("button", { name: label, exact: true }).click();
+await page.getByRole("button", { name: label, exact: true }).click({ noWaitAfter: true });
     const response = await responsePromise;
     const authorize = new URL(response.url());
     expect(authorize.searchParams.get("provider")).toBe(provider);
