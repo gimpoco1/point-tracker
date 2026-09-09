@@ -1,0 +1,51 @@
+name: Hosted end-to-end tests
+
+# Live database tests are an explicit run, separate from ordinary PR checks.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: plink-hosted-e2e
+  cancel-in-progress: false
+
+jobs:
+  hosted:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: hosted-e2e
+    timeout-minutes: 20
+    env:
+      E2E_SUPABASE_URL: ${{ secrets.E2E_SUPABASE_URL }}
+      E2E_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.E2E_SUPABASE_PUBLISHABLE_KEY }}
+      E2E_SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.E2E_SUPABASE_SERVICE_ROLE_KEY }}
+      E2E_OWNER_ID: ${{ secrets.E2E_OWNER_ID }}
+      E2E_OWNER_EMAIL: ${{ secrets.E2E_OWNER_EMAIL }}
+      E2E_OWNER_PASSWORD: ${{ secrets.E2E_OWNER_PASSWORD }}
+      E2E_MEMBER_ID: ${{ secrets.E2E_MEMBER_ID }}
+      E2E_MEMBER_EMAIL: ${{ secrets.E2E_MEMBER_EMAIL }}
+      E2E_MEMBER_PASSWORD: ${{ secrets.E2E_MEMBER_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm run test:e2e:types
+      - run: npm run test:e2e:hosted
+        id: hosted-tests
+      - name: Final cleanup after test failure
+        if: ${{ !cancelled() && steps.hosted-tests.outcome == 'failure' }}
+        run: npm run test:e2e:hosted:cleanup
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-hosted-report
+          path: |
+            playwright-hosted-report/
+            test-results-hosted/
+          retention-days: 7

@@ -11,3 +11,15 @@ yarn-error.log*
 pnpm-debug.log*
 .env.local
 supabase/.temp/
+dist-e2e/
+playwright-report/
+test-results/
+playwright/.cache/
+.env.e2e-hosted.local
+.env.e2e-hosted.local.*.tmp
+.env.e2e-hosted.local.lock
+.hosted-e2e.lock/
+dist-e2e-hosted/
+playwright-hosted-report/
+test-results-hosted/
+playwright/.auth/

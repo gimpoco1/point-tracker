@@ -45,16 +45,26 @@ export function GameHistoryScreen({ game }: Props) {
       scrollLeft: event.currentTarget.scrollLeft,
       dragged: false,
     };
-    event.currentTarget.setPointerCapture(event.pointerId);
   }
 
   function handleFilterPointerMove(event: PointerEvent<HTMLDivElement>) {
     const drag = filterDragRef.current;
     if (drag.pointerId !== event.pointerId) return;
 
+    // A press may end outside the strip before we have captured a drag.
+    if (event.pointerType === "mouse" && event.buttons === 0) {
+      drag.pointerId = -1;
+      drag.dragged = false;
+      return;
+    }
+
     const deltaX = event.clientX - drag.startX;
     if (Math.abs(deltaX) > 4) {
       drag.dragged = true;
+      // Capture only drags so ordinary clicks still reach the filter buttons.
+      if (!event.currentTarget.hasPointerCapture(event.pointerId)) {
+        event.currentTarget.setPointerCapture(event.pointerId);
+      }
       event.preventDefault();
     }
     event.currentTarget.scrollLeft = drag.scrollLeft - deltaX;
@@ -63,11 +73,18 @@ export function GameHistoryScreen({ game }: Props) {
   function handleFilterPointerEnd(event: PointerEvent<HTMLDivElement>) {
     const drag = filterDragRef.current;
     if (drag.pointerId !== event.pointerId) return;
-    event.currentTarget.releasePointerCapture(event.pointerId);
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
     filterDragRef.current.pointerId = -1;
   }
 
   function handleFilterClickCapture(event: MouseEvent<HTMLDivElement>) {
+    // Keyboard activation must never be consumed by an earlier pointer drag.
+    if (event.detail === 0) {
+      filterDragRef.current.dragged = false;
+      return;
+    }
     if (!filterDragRef.current.dragged) return;
     event.preventDefault();
     event.stopPropagation();
