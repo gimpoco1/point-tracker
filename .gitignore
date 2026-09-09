@@ -10,6 +10,10 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 .env.local
+android/local.properties
+*.jks
+*.keystore
+google-service-account*.json
 supabase/.temp/
 dist-e2e/
 playwright-report/

@@ -15,6 +15,7 @@ export type DotGridProps = {
   idleMotion?: boolean;
   idleSpeed?: number;
   idleStrength?: number;
+  reducedMotionScale?: number;
   className?: string;
   style?: CSSProperties;
 };

@@ -9,8 +9,12 @@ import {
   Trash2,
   UserRound,
 } from "lucide-react";
-import { APP_STORE_URL, ROADMAP_URL } from "../../constants";
-import { isNativeApp } from "../../lib/nativePlatform";
+import {
+  APP_STORE_URL,
+  GOOGLE_PLAY_STORE_URL,
+  ROADMAP_URL,
+} from "../../constants";
+import { isNativeAndroidApp, isNativeApp } from "../../lib/nativePlatform";
 import {
   FEEDBACK_EMAIL_URL,
   getReportAProblemEmailUrl,
@@ -32,6 +36,7 @@ export function AuthAccountPanel() {
     signOut,
   } = useAuthDialogContext();
   const nativeApp = isNativeApp();
+  const rateUrl = isNativeAndroidApp() ? GOOGLE_PLAY_STORE_URL : APP_STORE_URL;
 
   return (
     <div className="authDialog__panel">
@@ -128,7 +133,7 @@ export function AuthAccountPanel() {
         {nativeApp ? (
           <div className="authDialog__communityActions">
             <>
-              <a href={APP_STORE_URL} target="_blank" rel="noreferrer">
+              <a href={rateUrl} target="_blank" rel="noreferrer">
                 <Heart size={17} strokeWidth={2.3} aria-hidden="true" />
                 <span>{translate("copy.ratePlink")}</span>
               </a>

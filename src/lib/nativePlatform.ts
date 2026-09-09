@@ -14,6 +14,10 @@ export function isNativeIOSApp() {
   return isNativeApp() && Capacitor.getPlatform() === "ios";
 }
 
+export function isNativeAndroidApp() {
+  return isNativeApp() && Capacitor.getPlatform() === "android";
+}
+
 export function getAuthRedirectUrl(flow?: "recovery") {
   if (isNativeApp()) {
     const callbackUrl = new URL(NATIVE_AUTH_CALLBACK_URL);
