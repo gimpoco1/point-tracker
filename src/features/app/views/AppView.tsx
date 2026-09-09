@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { SplashScreen } from "@capacitor/splash-screen";
-import { isNativeApp } from "../../../lib/nativePlatform";
+import { isNativeAndroidApp, isNativeApp } from "../../../lib/nativePlatform";
 import { useAppContext } from "../context/AppContext";
 import { AppDialogs } from "../components/AppDialogs";
 import { AppLoadingScreen } from "../components/AppLoadingScreen";
@@ -78,6 +78,7 @@ export function AppView() {
               returnDuration={1.5}
               idleSpeed={1.75}
               idleStrength={4.5}
+              reducedMotionScale={isNativeAndroidApp() ? 1 : undefined}
             />
           </Suspense>
         ) : null}

@@ -11,6 +11,10 @@ export const PLAYERS_VIEW_STORAGE_KEY = "plink:playersView:v1";
 export const HOME_NEW_GAME_OPEN_KEY = "plink:homeNewGameOpen:v1";
 export const APP_STORE_URL =
   "https://apps.apple.com/us/app/plink-scorekeeper/id6791116577";
+// This is Plink's intended Google Play listing URL. It will begin working as
+// soon as the `com.plinkscore.app` listing is published in Play Console.
+export const GOOGLE_PLAY_STORE_URL =
+  "https://play.google.com/store/apps/details?id=com.plinkscore.app";
 export const ROADMAP_URL = "/roadmap.html";
 export const REFRESH_PAST_LINKED_PLAYERS_EVENT =
   "plink:refreshPastLinkedPlayers";

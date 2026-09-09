@@ -11,6 +11,9 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "native:sync": "npm run build && cap sync",
+    "android:sync": "npm run build && cap sync android",
+    "android:open": "cap open android",
+    "android:run": "npm run android:sync && cap run android",
     "ios:sync": "npm run build && cap sync ios",
     "ios:open": "cap open ios",
     "ios:run": "npm run ios:sync && cap run ios",
@@ -25,6 +28,7 @@
     "test:e2e:hosted:cleanup": "node --experimental-strip-types e2e/hosted/cleanup.ts"
   },
   "dependencies": {
+    "@capacitor/android": "^8.5.1",
     "@capacitor/app": "^8.1.0",
     "@capacitor/browser": "^8.0.3",
     "@capacitor/core": "^8.4.1",

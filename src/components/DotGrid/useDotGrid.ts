@@ -21,6 +21,7 @@ export function useDotGrid({
   idleMotion = true,
   idleSpeed = 1,
   idleStrength = 1.8,
+  reducedMotionScale = 0.32,
 }: DotGridProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -108,7 +109,7 @@ export function useDotGrid({
       const height = canvas.clientHeight;
       const pointer = pointerRef.current;
       const idleEnabled = idleMotion;
-      const motionScale = prefersReducedMotion ? 0.32 : 1;
+      const motionScale = prefersReducedMotion ? reducedMotionScale : 1;
       const userIsActive = timestamp - pointer.lastInteraction < 1800;
       const idleTime = timestamp * 0.00032 * idleSpeed * motionScale;
       const idleX = width * (0.5 + Math.sin(idleTime) * 0.38);
@@ -193,6 +194,7 @@ export function useDotGrid({
     idleMotion,
     idleSpeed,
     idleStrength,
+    reducedMotionScale,
   ]);
 
   useEffect(() => {

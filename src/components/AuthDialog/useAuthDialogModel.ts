@@ -24,6 +24,7 @@ import {
   NATIVE_AUTH_COMPLETED_EVENT,
   getAuthRedirectUrl,
   isNativeApp,
+  isNativeAndroidApp,
   isNativeIOSApp,
   openExternalUrl,
 } from "../../lib/nativePlatform";
@@ -1266,6 +1267,14 @@ export function useAuthDialogModel(
       return;
     }
 
+    // Google Play requires its billing flow for these in-app digital purchases.
+    // Keep Android out of the web Stripe checkout until its Play Billing bridge
+    // and server-side verification are configured with the Play Console app.
+    if (isNativeAndroidApp()) {
+      setError(translate("copy.checkoutIsNotAvailableYet"));
+      return;
+    }
+
     setBusy(true);
     setError(null);
     setNotice(null);
@@ -1352,6 +1361,11 @@ export function useAuthDialogModel(
       return;
     }
 
+    if (isNativeAndroidApp()) {
+      setError(translate("copy.sessionPassCheckoutIsNotAvailableYet"));
+      return;
+    }
+
     setBusy(true);
     setError(null);
     setNotice(null);
@@ -1412,6 +1426,11 @@ export function useAuthDialogModel(
       return;
     }
 
+    if (isNativeAndroidApp()) {
+      setError(translate("copy.billingPortalIsNotAvailableYet"));
+      return;
+    }
+
     setBusy(true);
     setError(null);
     setNotice(null);
@@ -1451,6 +1470,10 @@ export function useAuthDialogModel(
       if (isNativeIOSApp()) {
         await openExternalUrl("https://plinkscore.com");
         return;
+      }
+
+      if (isNativeAndroidApp()) {
+        throw new Error(translate("copy.subscriptionSettingsCouldNotBeOpened"));
       }
 
       await restoreSubscription();
